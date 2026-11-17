@@ -1,0 +1,6 @@
+{
+  "name": "CleanFeed",
+  "description": "A clean, modern RSS feed reader featuring customizable categories, OPML/XML/JSON import and export, card-style articles, and bookmarks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

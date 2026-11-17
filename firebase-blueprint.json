@@ -1,0 +1,52 @@
+{
+  "entities": {
+    "Feed": {
+      "title": "User Feed",
+      "description": "An RSS feed subscribed to by a user for cloud backup and sync.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier or URL hash for the feed"
+        },
+        "name": {
+          "type": "string",
+          "description": "Display name of the RSS feed"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Feed XML URL"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category for the feed"
+        },
+        "siteUrl": {
+          "type": "string",
+          "description": "Website home URL"
+        },
+        "isEnabled": {
+          "type": "boolean",
+          "description": "Whether the feed is enabled"
+        },
+        "userId": {
+          "type": "string",
+          "description": "UID of the owner user"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last updated timestamp. Must be FieldValue.serverTimestamp() on client writes."
+        }
+      },
+      "required": ["id", "name", "url", "category", "userId", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/feeds/{feedId}": {
+      "schema": { "$ref": "#/entities/Feed" },
+      "description": "Collection of feeds backed up and synchronized per user."
+    }
+  }
+}

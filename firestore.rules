@@ -1,0 +1,40 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidFeed(userId) {
+      return incoming().id is string
+        && incoming().name is string
+        && incoming().name.size() > 0
+        && incoming().name.size() <= 200
+        && incoming().url is string
+        && incoming().url.size() > 0
+        && incoming().url.size() <= 2048
+        && incoming().category is string
+        && incoming().category.size() <= 100
+        && incoming().userId == userId
+        && incoming().updatedAt is timestamp
+        && incoming().updatedAt <= request.time;
+    }
+
+    match /users/{userId}/feeds/{feedId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && isValidFeed(userId);
+      allow update: if isOwner(userId) && isValidFeed(userId);
+      allow delete: if isOwner(userId);
+    }
+  }
+}
